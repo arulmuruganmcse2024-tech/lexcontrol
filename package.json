@@ -2,6 +2,7 @@
   "name": "lexcontrol",
   "version": "1.0.0",
   "private": true,
+  "homepage": "https://arulmuruganmcse2024-tech.github.io/lexcontrol/",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

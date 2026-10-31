@@ -1,11 +1,14 @@
 # LexControl
 
-![GitHub Pages](https://img.shields.io/badge/Live_Terminal-GitHub_Pages-2563EB?style=for-the-badge&logo=github)
-![Automated Tests](https://img.shields.io/badge/Automated_Tests-42_%2F_42_Passing-10B981?style=for-the-badge)
-![Chainlink CRE](https://img.shields.io/badge/Chainlink_CRE-WASM_SDK_v1.23.0-375BD2?style=for-the-badge&logo=chainlink)
-![RYO-CHAN MCP](https://img.shields.io/badge/RYO--CHAN-8_Read--Only_MCP_Tools-06B6D4?style=for-the-badge)
-![NY UCC Article 12](https://img.shields.io/badge/NY_UCC_Art._12-Eff._June_3,_2026-8B5CF6?style=for-the-badge)
-![FRE 902(13)/(14)](https://img.shields.io/badge/Fed._R._Evid.-902(13)_%26_902(14)-F59E0B?style=for-the-badge)
+[![Live Institutional Terminal](https://img.shields.io/badge/🌐_LIVE_TERMINAL-GitHub_Pages-2563EB?style=for-the-badge&logo=github)](https://arulmuruganmcse2024-tech.github.io/lexcontrol/)
+[![Automated Tests](https://img.shields.io/badge/Automated_Tests-42_%2F_42_Passing-10B981?style=for-the-badge)](https://github.com/arulmuruganmcse2024-tech/lexcontrol/actions)
+[![Chainlink CRE](https://img.shields.io/badge/Chainlink_CRE-WASM_SDK_v1.23.0-375BD2?style=for-the-badge&logo=chainlink)](https://cre.chain.link)
+[![RYO-CHAN MCP](https://img.shields.io/badge/RYO--CHAN-8_Read--Only_MCP_Tools-06B6D4?style=for-the-badge)](https://github.com/arulmuruganmcse2024-tech/lexcontrol)
+[![NY UCC Article 12](https://img.shields.io/badge/NY_UCC_Art._12-Eff._June_3,_2026-8B5CF6?style=for-the-badge)](https://github.com/arulmuruganmcse2024-tech/lexcontrol)
+[![FRE 902(13)/(14)](https://img.shields.io/badge/Fed._R._Evid.-902(13)_%26_902(14)-F59E0B?style=for-the-badge)](https://arulmuruganmcse2024-tech.github.io/lexcontrol/#court-exhibit)
+
+> **🚀 LIVE APPLICATION TERMINAL**: [https://arulmuruganmcse2024-tech.github.io/lexcontrol/](https://arulmuruganmcse2024-tech.github.io/lexcontrol/)  
+> Access the interactive New York UCC Article 12 CER Perfection, What-If Statutory Stress-Tester, Control Topology Map, and FRE 902 Court Exhibit Desk live in your browser with zero setup required.
 
 **Autonomous New York UCC Article 12 (§§ 12-102–12-107) Controllable Electronic Record (CER) Perfection-by-Control, Account-Debtor Discharge Lock, Bankruptcy Safe-Harbor, and Market-Evidence Practice Trading Desk powered by Chainlink Runtime Environment (CRE) and RYO-CHAN MCP.**
 
