@@ -17,7 +17,7 @@ export default function LexControlTerminalPage() {
   const [activePresetId, setActivePresetId] = useState<number>(1)
   const [liveMode, setLiveMode] = useState<boolean>(false)
   const [customOverrides, setCustomOverrides] = useState<Partial<EvidencePack["cre_onchain_facility"]> | null>(null)
-  const [viewTab, setViewTab] = useState<"terminal" | "court_exhibit" | "about">("terminal")
+  const [viewTab, setViewTab] = useState<"terminal" | "court_exhibit">("terminal")
   const [verifyStatus, setVerifyStatus] = useState<string>(
     "Ledger Verified • 4/4 Statutory Facilities Ready"
   )
@@ -27,14 +27,12 @@ export default function LexControlTerminalPage() {
     receiptId: string | null
   } | null>(null)
 
-  // Listen to hash change for #court-exhibit and #about quick-links
+  // Listen to hash change for #court-exhibit quick-link
   useEffect(() => {
     if (typeof window !== "undefined") {
       const handleHash = () => {
         if (window.location.hash === "#court-exhibit") {
           setViewTab("court_exhibit")
-        } else if (window.location.hash === "#about") {
-          setViewTab("about")
         }
       }
       handleHash()
@@ -326,24 +324,6 @@ export default function LexControlTerminalPage() {
             >
               FRE 902 Court Pleading Tab
             </button>
-            <button
-              onClick={() => {
-                setViewTab("about")
-                if (typeof window !== "undefined") window.location.hash = "about"
-              }}
-              style={{
-                background: viewTab === "about" ? "#2563EB" : "transparent",
-                color: "#FFFFFF",
-                border: "none",
-                padding: "6px 12px",
-                borderRadius: 4,
-                fontSize: 11.5,
-                fontWeight: 600,
-                cursor: "pointer",
-              }}
-            >
-              About LexControl
-            </button>
           </div>
 
           {/* MODE TOGGLE */}
@@ -502,143 +482,6 @@ export default function LexControlTerminalPage() {
                 <div style={{ fontWeight: 700, marginTop: 8, color: "#93C5FD" }}>IV. DECLARATION UNDER PENALTY OF PERJURY (28 U.S.C. § 1746)</div>
                 <div>Executed on {receipt.captured_at_iso} &bull; Verification Result: ORIGINAL &amp; EXHIBIT IDENTICAL (PASS)</div>
                 <div style={{ color: "#94A3B8", fontStyle: "italic" }}>Signed: /s/ Qualified Systems Custodian — LexControl Evidentiary Desk</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : viewTab === "about" ? (
-        /* ABOUT LEXCONTROL INSTITUTIONAL BRIEFING VIEW */
-        <div style={{ padding: 24, maxWidth: 1040, margin: "0 auto", width: "100%", boxSizing: "border-box" }}>
-          {/* HEADER */}
-          <div style={{ borderBottom: "1px solid #1E293B", paddingBottom: 16, marginBottom: 20 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
-              <div>
-                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                  <h2 style={{ margin: 0, fontSize: 20, fontWeight: 800, color: "#93C5FD" }}>About LexControl</h2>
-                  <span
-                    style={{
-                      fontSize: 10,
-                      fontWeight: 700,
-                      color: "#10B981",
-                      background: "rgba(16, 185, 129, 0.12)",
-                      padding: "2px 8px",
-                      borderRadius: 4,
-                      border: "1px solid rgba(16, 185, 129, 0.3)",
-                    }}
-                  >
-                    INSTITUTIONAL GRADE
-                  </span>
-                </div>
-                <p style={{ margin: "6px 0 0 0", fontSize: 13, color: "#94A3B8", lineHeight: 1.5 }}>
-                  Autonomous New York UCC Article 12 (§§ 12-102–12-107) Controllable Electronic Record Perfection-by-Control, 11 U.S.C. § 559 Safe-Harbor, Chainlink CRE Decentralized Oracle Network, and FRE 902(13)/(14) Court Evidentiary Desk.
-                </p>
-              </div>
-              <div style={{ display: "flex", gap: 8 }}>
-                <button
-                  onClick={() => {
-                    setViewTab("terminal")
-                    if (typeof window !== "undefined") window.location.hash = ""
-                  }}
-                  style={{
-                    background: "#2563EB",
-                    color: "#FFFFFF",
-                    border: "none",
-                    padding: "8px 16px",
-                    borderRadius: 6,
-                    fontSize: 12,
-                    fontWeight: 600,
-                    cursor: "pointer",
-                  }}
-                >
-                  Launch Console
-                </button>
-                <a
-                  href="https://github.com/arulmuruganmcse2024-tech/lexcontrol"
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{
-                    background: "#1E293B",
-                    color: "#F8FAFC",
-                    border: "1px solid #334155",
-                    padding: "8px 16px",
-                    borderRadius: 6,
-                    fontSize: 12,
-                    fontWeight: 600,
-                    textDecoration: "none",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 6,
-                  }}
-                >
-                  GitHub Repository ↗
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* 3 CORE PILLARS GRID */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 16, marginBottom: 24 }}>
-            {/* PILLAR 1 */}
-            <div style={{ background: "#0F172A", border: "1px solid #1E293B", borderRadius: 8, padding: 16 }}>
-              <div style={{ color: "#8B5CF6", fontWeight: 700, fontSize: 12, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 6 }}>
-                1. Statutory Commercial Law
-              </div>
-              <h3 style={{ margin: "0 0 8px 0", fontSize: 14, color: "#F1F5F9" }}>
-                NY UCC Article 12 &amp; Article 9 Revisions
-              </h3>
-              <p style={{ fontSize: 12, color: "#94A3B8", lineHeight: 1.5, margin: 0 }}>
-                Effective <strong>June 3, 2026</strong>, NY UCC Article 12 establishes statutory perfection for Controllable Electronic Records (CERs). LexControl enforces § 12-105 exclusive control, prevents fatal § 12-105(c)(2)(B) co-sign taints, locks account-debtor discharge under § 12-106, satisfies § 9-208(b)(8) release duties, and secures § 9-326A super-priority.
-              </p>
-            </div>
-
-            {/* PILLAR 2 */}
-            <div style={{ background: "#0F172A", border: "1px solid #1E293B", borderRadius: 8, padding: 16 }}>
-              <div style={{ color: "#F59E0B", fontWeight: 700, fontSize: 12, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 6 }}>
-                2. Federal Insolvency Protections
-              </div>
-              <h3 style={{ margin: "0 0 8px 0", fontSize: 14, color: "#F1F5F9" }}>
-                11 U.S.C. § 362(a) Stay vs. § 559 Safe-Harbor
-              </h3>
-              <p style={{ fontSize: 12, color: "#94A3B8", lineHeight: 1.5, margin: 0 }}>
-                Distinguishes non-exempt credit subject to the US Bankruptcy Code Automatic Stay (11 U.S.C. § 362(a)) from protected financial contracts (11 U.S.C. §§ 546(e), 555, 559, 560 &amp; UK Insolvency Act 1986 Sch. 4ZZA). Blocks illegal on-chain seizures and routes protection to off-estate macro hedges.
-              </p>
-            </div>
-
-            {/* PILLAR 3 */}
-            <div style={{ background: "#0F172A", border: "1px solid #1E293B", borderRadius: 8, padding: 16 }}>
-              <div style={{ color: "#38BDF8", fontWeight: 700, fontSize: 12, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 6 }}>
-                3. Decentralized Automation &amp; Evidentiary Proof
-              </div>
-              <h3 style={{ margin: "0 0 8px 0", fontSize: 14, color: "#F1F5F9" }}>
-                Chainlink CRE, RYO-CHAN &amp; FRE 902
-              </h3>
-              <p style={{ fontSize: 12, color: "#94A3B8", lineHeight: 1.5, margin: 0 }}>
-                Compiles deterministic TypeScript to WebAssembly (.wasm) via Bun, executes BFT node consensus, reads finalized EVM block states, queries RYO-CHAN MCP with 100% JSON readback, and generates 28-line numbered FRE 902(13)/(14) court pleadings with trailing JSON proof packets.
-              </p>
-            </div>
-          </div>
-
-          {/* ARCHITECTURAL HIGHLIGHTS & VERIFICATION METRICS */}
-          <div style={{ background: "#0F172A", border: "1px solid #1E293B", borderRadius: 8, padding: 18, marginBottom: 20 }}>
-            <h4 style={{ margin: "0 0 12px 0", fontSize: 13, textTransform: "uppercase", color: "#93C5FD", letterSpacing: "0.05em" }}>
-              System Health &amp; Cryptographic Attestation Summary
-            </h4>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 12, fontFamily: "ui-monospace, monospace", fontSize: 11 }}>
-              <div style={{ background: "#0B0F17", border: "1px solid #1E293B", padding: 10, borderRadius: 5 }}>
-                <div style={{ color: "#10B981", fontWeight: 700 }}>● 42/42 AUTOMATED TESTS</div>
-                <div style={{ color: "#94A3B8", marginTop: 3 }}>Statutory boundaries, pure SHA-256 NIST vector &amp; CI passed</div>
-              </div>
-              <div style={{ background: "#0B0F17", border: "1px solid #1E293B", padding: 10, borderRadius: 5 }}>
-                <div style={{ color: "#10B981", fontWeight: 700 }}>● 4/4 STATUTORY PRESETS</div>
-                <div style={{ color: "#94A3B8", marginTop: 3 }}>Zero-network bit-for-bit replay with 100% JSON readback</div>
-              </div>
-              <div style={{ background: "#0B0F17", border: "1px solid #1E293B", padding: 10, borderRadius: 5 }}>
-                <div style={{ color: "#38BDF8", fontWeight: 700 }}>● ETHEREUM SEPOLIA ANCHOR</div>
-                <div style={{ color: "#94A3B8", marginTop: 3 }}>KeystoneForwarder (0xF834...) &amp; Consumer (0x9C7A...)</div>
-              </div>
-              <div style={{ background: "#0B0F17", border: "1px solid #1E293B", padding: 10, borderRadius: 5 }}>
-                <div style={{ color: "#F59E0B", fontWeight: 700 }}>● FRE 902(13)/(14) COURT PROOF</div>
-                <div style={{ color: "#94A3B8", marginTop: 3 }}>Trailing JSON proof packet embedded after %%EOF</div>
               </div>
             </div>
           </div>

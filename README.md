@@ -14,26 +14,6 @@
 
 ---
 
-## About LexControl
-
-**LexControl** is an autonomous, fail-closed LegalTech execution, perfection-by-control, and evidentiary desk built for institutional credit facilities, tokenized receivables, and digital Controllable Electronic Records (CERs).
-
-Developed for the **BLI Legal Tech Hackathon 2** and powered by the **Chainlink Runtime Environment (CRE)** and **RYO-CHAN MCP**, LexControl bridges statutory commercial law, United States federal insolvency protections, and on-chain decentralized oracle automation.
-
-### The Institutional Problem
-On **June 3, 2026**, New York Uniform Commercial Code (NY UCC) Article 12 (§§ 12-102–12-107) and revised Article 9 (§§ 9-102, 9-208, 9-314, 9-326A) enter into statutory effect, governing the perfection and super-priority of Controllable Electronic Records. Credit funds, lenders, and asset originators face three critical vulnerabilities:
-1. **Fatal Multi-Sig Control Taint (§ 12-105(c)(2)(B))**: If a borrower/debtor retains co-signature power or transfer authority on smart contract multi-sigs, exclusive control is defeated. The secured party unwittingly loses NY UCC § 9-326A super-priority to competing UCC-1 filers.
-2. **Bankruptcy Automatic Stay Violations (11 U.S.C. § 362(a))**: Unchecked algorithmic DeFi liquidations against a borrower in Chapter 11 bankruptcy (SEC Form 8-K Item 1.03) violate the Automatic Stay and § 365(e)(1) Ipso Facto ban, exposing lenders to federal contempt sanctions.
-3. **Inability to Enforce Safe-Harbor Closeouts (11 U.S.C. §§ 546(e), 555, 559, 560)**: Qualifying contracts (such as Master Repurchase Agreements under § 559 or Swap Agreements under § 560, and UK Insolvency Act 1986 Schedule 4ZZA) are statutory exemptions to the stay. Traditional systems cannot distinguish exempt repos from non-exempt commercial loans.
-
-### The LexControl Architecture
-- **Multi-Source Evidence Gathering**: Ingests real-world data from ISO 17442 GLEIF LEI Registry, SEC EDGAR Form 8-K insolvency filings, RYO-CHAN MCP read-only market tools, and finalized Ethereum Sepolia contract states (`LAST_FINALIZED_BLOCK_NUMBER`).
-- **Deterministic 8-Gate Statutory Engine**: Evaluates freshness, basis spreads, prompt-injection defense, GLEIF golden copy, UCC § 12-105 control exclusivity, § 12-107 governing law, § 362(a) stay vs. § 559 safe-harbor routing, and ATR position sizing.
-- **Chainlink Runtime Environment (CRE)**: Compiles deterministic TypeScript workflow to WebAssembly (.wasm) via Bun, executes Byzantine Fault Tolerant node consensus, signs secp256k1 reports, and dispatches them via KeystoneForwarder to `UCC12ControlConsumer.sol`.
-- **Self-Authenticating Court Exhibits (FRE 902(13) & 902(14))**: Generates 28-line numbered legal pleading papers with embedded trailing cryptographic JSON proof packets after `%%EOF` for instant, zero-dependency offline adverse-party verification under 28 U.S.C. § 1746.
-
----
-
 ## Evaluator Quick-Links & Live Resources
 
 | Resource | Direct Link | Description |
