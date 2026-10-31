@@ -9,8 +9,8 @@ import {
   buildDecisionReceiptFromEvidence,
   canonicalizeJson,
   generateFullHashChainedLedger,
-  sha256Hex,
 } from "../src/ledger/hashChain"
+import { sha256Hex } from "../src/ledger/sha256Pure"
 import {
   extractAndVerifyPdfProofPacket,
   generateCourtPleadingPdfBytes,
@@ -32,7 +32,7 @@ function runTest(name: string, fn: () => void) {
 
 async function runSuite() {
   console.log("================================================================================")
-  console.log(" LEXCONTROL 38-TEST AUTOMATED SUITE (STATUTORY, CRE WASM, RYO-CHAN & FRE 902)")
+  console.log(" LEXCONTROL 42-TEST AUTOMATED SUITE (STATUTORY, CRE WASM, RYO-CHAN & FRE 902)")
   console.log("================================================================================")
 
   // Group 1: RYO-CHAN Honesty & Null-Safety Invariants (6 Tests)
@@ -201,6 +201,53 @@ async function runSuite() {
     assert.ok(fs.existsSync(path.join(process.cwd(), ".env.example")))
   })
 
+  // Group 5: FIPS 180-4 Pure SHA-256, GitHub Pages Static Export & Interactive What-If Simulator (4 Tests)
+  runTest("Test 39: Pure FIPS 180-4 SHA-256 (sha256Pure.ts) matches NIST standard test vector", () => {
+    assert.equal(
+      sha256Hex("abc"),
+      "0xba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+    )
+  })
+
+  runTest("Test 40: Next.js Static Export config (next.config.mjs) and GitHub Pages workflow exist and are valid", () => {
+    const nextConfigContent = fs.readFileSync(path.join(process.cwd(), "next.config.mjs"), "utf8")
+    assert.ok(nextConfigContent.includes('output: "export"'))
+    const workflowPath = path.join(process.cwd(), ".github/workflows/deploy-pages.yml")
+    assert.ok(fs.existsSync(workflowPath))
+    const workflowContent = fs.readFileSync(workflowPath, "utf8")
+    assert.ok(workflowContent.includes("Deploy LexControl to GitHub Pages"))
+  })
+
+  runTest("Test 41: LICENSE and PROJECT_SUBMISSION_FORM.md exist at the repository root", () => {
+    assert.ok(fs.existsSync(path.join(process.cwd(), "LICENSE")))
+    assert.ok(fs.existsSync(path.join(process.cwd(), "PROJECT_SUBMISSION_FORM.md")))
+    const formContent = fs.readFileSync(path.join(process.cwd(), "PROJECT_SUBMISSION_FORM.md"), "utf8")
+    assert.ok(formContent.includes("Official Project Submission Form"))
+  })
+
+  runTest("Test 42: Dynamic What-If Statutory Override recomputation produces deterministic, distinct receipt hashes", () => {
+    const base = JSON.parse(JSON.stringify(RECORDED_EVIDENCE_PRESETS[1]))
+    const receiptNormal = buildDecisionReceiptFromEvidence(
+      base,
+      1,
+      "0x0000000000000000000000000000000000000000000000000000000000000000"
+    )
+
+    const overridden = JSON.parse(JSON.stringify(RECORDED_EVIDENCE_PRESETS[1]))
+    overridden.cre_onchain_facility.transferor_cosign_required_12_105_c_2_b = true
+    overridden.cre_onchain_facility.has_exclusive_control_12_105 = false
+    const receiptTainted = buildDecisionReceiptFromEvidence(
+      overridden,
+      1,
+      "0x0000000000000000000000000000000000000000000000000000000000000000"
+    )
+
+    assert.notEqual(receiptNormal.receipt_id, receiptTainted.receipt_id)
+    assert.equal(receiptNormal.ucc12_exclusive_control, true)
+    assert.equal(receiptTainted.ucc12_exclusive_control, false)
+    assert.equal(receiptTainted.practice_trade.statutory_action_code, 3)
+  })
+
   console.log("================================================================================")
   console.log(` SUITE SUMMARY: ${passed} PASSED, ${failed} FAILED (TOTAL: ${passed + failed} AUTOMATED TESTS)`)
   console.log("================================================================================")
@@ -208,4 +255,3 @@ async function runSuite() {
 }
 
 runSuite()
-

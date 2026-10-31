@@ -1,18 +1,135 @@
 # LexControl
 
-[![Evaluation Track](https://img.shields.io/badge/Track-LegalTech%20%26%20RegTech-blue.svg)](https://dorahacks.io)
-[![Chainlink CRE](https://img.shields.io/badge/Chainlink%20CRE-v1.23.0%20WASM-375BD2.svg)](https://chain.link)
-[![NY UCC Article 12](https://img.shields.io/badge/Statute-NY%20UCC%20Art.%2012%20(Eff.%20June%202026)-10B981.svg)](https://www.nysenate.gov/legislation/laws/UCC)
-[![Tests](https://img.shields.io/badge/Test%20Suite-38%20Passing%20(100%25)-success.svg)](./tests/lexcontrol.test.ts)
-[![Evidence Admissibility](https://img.shields.io/badge/Evidence-FRE%20902(13)%2F(14)%20Certified-indigo.svg)](./src/legal/pleadingPdfExporter.ts)
+![GitHub Pages](https://img.shields.io/badge/Live_Terminal-GitHub_Pages-2563EB?style=for-the-badge&logo=github)
+![Automated Tests](https://img.shields.io/badge/Automated_Tests-42_%2F_42_Passing-10B981?style=for-the-badge)
+![Chainlink CRE](https://img.shields.io/badge/Chainlink_CRE-WASM_SDK_v1.23.0-375BD2?style=for-the-badge&logo=chainlink)
+![RYO-CHAN MCP](https://img.shields.io/badge/RYO--CHAN-8_Read--Only_MCP_Tools-06B6D4?style=for-the-badge)
+![NY UCC Article 12](https://img.shields.io/badge/NY_UCC_Art._12-Eff._June_3,_2026-8B5CF6?style=for-the-badge)
+![FRE 902(13)/(14)](https://img.shields.io/badge/Fed._R._Evid.-902(13)_%26_902(14)-F59E0B?style=for-the-badge)
 
 **Autonomous New York UCC Article 12 (§§ 12-102–12-107) Controllable Electronic Record (CER) Perfection-by-Control, Account-Debtor Discharge Lock, Bankruptcy Safe-Harbor, and Market-Evidence Practice Trading Desk powered by Chainlink Runtime Environment (CRE) and RYO-CHAN MCP.**
 
 ---
 
-## Technical Track Specialization & Evaluator Alignment
+## Evaluator Quick-Links & Live Resources
 
-LexControl was engineered to address critical institutional failure modes at the intersection of commercial law, automated agentic execution, and decentralized infrastructure:
+| Resource | Direct Link | Description |
+|---|---|---|
+| **Live Institutional Terminal (GitHub Pages)** | [https://arulmuruganmcse2024-tech.github.io/lexcontrol/](https://arulmuruganmcse2024-tech.github.io/lexcontrol/) | Fully client-side interactive console with What-If simulator |
+| **Interactive FRE 902 Court Exhibit View** | [https://arulmuruganmcse2024-tech.github.io/lexcontrol/#court-exhibit](https://arulmuruganmcse2024-tech.github.io/lexcontrol/#court-exhibit) | 28-line numbered court pleading paper preview & PDF download |
+| **Chainlink CRE WASM Workflow** | [`cre/lexcontrol-workflow/main.ts`](file:///c:/Users/arulm/OneDrive/Documents/Hackathon/lexcontrol/cre/lexcontrol-workflow/main.ts) | Deterministic TypeScript workflow for Bun & Javy/QuickJS |
+| **CRE Simulation & Broadcast Log** | [`cre/SIMULATION_OUTPUT.txt`](file:///c:/Users/arulm/OneDrive/Documents/Hackathon/lexcontrol/cre/SIMULATION_OUTPUT.txt) | Verified WASM compilation and Sepolia transaction hashes |
+| **NY UCC Art. 12 Smart Contract** | [`contracts/src/MockControllableAsset.sol`](file:///c:/Users/arulm/OneDrive/Documents/Hackathon/lexcontrol/contracts/src/MockControllableAsset.sol) | Enforces §§ 12-102–107, 8-103(i), 9-208(b)(8), 9-326A |
+| **CRE IReceiver Consumer Contract** | [`contracts/src/UCC12ControlConsumer.sol`](file:///c:/Users/arulm/OneDrive/Documents/Hackathon/lexcontrol/contracts/src/UCC12ControlConsumer.sol) | ERC-165 KeystoneForwarder consumer with metadata slicing |
+| **Foundry Test Suite** | [`contracts/test/LexControl.t.sol`](file:///c:/Users/arulm/OneDrive/Documents/Hackathon/lexcontrol/contracts/test/LexControl.t.sol) | Solidity unit and fuzz tests for CRE Keystone report decoding |
+| **8-Gate Deterministic Engine** | [`src/engine/deterministicGates.ts`](file:///c:/Users/arulm/OneDrive/Documents/Hackathon/lexcontrol/src/engine/deterministicGates.ts) | Fail-closed statutory and market volatility pipeline |
+| **42-Test Automated Verification Suite** | [`tests/lexcontrol.test.ts`](file:///c:/Users/arulm/OneDrive/Documents/Hackathon/lexcontrol/tests/lexcontrol.test.ts) | 42 unit, boundary, cryptographic, and source-audit tests |
+| **Zero-Key Offline Verifier CLI** | [`scripts/verify.ts`](file:///c:/Users/arulm/OneDrive/Documents/Hackathon/lexcontrol/scripts/verify.ts) | Bit-for-bit offline deterministic replay script |
+
+---
+
+## System Architecture
+
+```mermaid
+flowchart TB
+    subgraph Layer1["Layer 1: Multi-Source Primary Evidence & Autonomous Council"]
+        E1["GLEIF Golden Copy LEI<br/>(ISO 17442 Active Status)"]
+        E2["SEC EDGAR Form 8-K<br/>(Item 1.03 Bankruptcy / 2.04 Acceleration)"]
+        E3["RYO-CHAN MCP Read-Only Tools<br/>(market_overview, deep_analysis, check_safety)"]
+        E4["Public Venues & Finalized EVM State<br/>(Coinbase / Binance Spot + Sepolia Block)"]
+        
+        C1["Market & Basis Agent<br/>(Brier: 0.112, Wt: 0.46)"]
+        C2["NY UCC & Bankruptcy Counsel Agent<br/>(Brier: 0.084, Wt: 0.54)"]
+        J1["Calibrated Judge Agent<br/>(100% Programmatic JSON Readback)"]
+
+        E1 --> C2
+        E2 --> C2
+        E3 --> C1
+        E4 --> C1
+        C1 --> J1
+        C2 --> J1
+    end
+
+    subgraph Layer2["Layer 2: 8 Deterministic Statutory Gates & Chainlink CRE DON"]
+        G1["[G1] Freshness TTL & Null Safety"]
+        G2["[G2] Cross-Venue Basis Check (<= 200 bps)"]
+        G3["[G3] Prompt-Injection & Honeypot Guard"]
+        G4["[G4] GLEIF LEI Status Verification"]
+        G5["[G5] NY UCC § 12-105 Exclusivity & § 12-102(a)(3) Value"]
+        G6["[G6] NY UCC § 12-107(c) Governing Law Waterfall"]
+        G7["[G7] 11 U.S.C. § 362(a) Stay vs. Safe Harbor Router"]
+        G8["[G8] ATR Position Sizing & 2:1 R/R Portfolio Cap"]
+
+        CRE["Chainlink CRE Decentralized Oracle Network<br/>• WebAssembly (@chainlink/cre-sdk v1.23.0)<br/>• BFT Median Consensus Aggregation<br/>• LAST_FINALIZED_BLOCK_NUMBER Reads<br/>• Secp256k1 Threshold Report Signing"]
+
+        J1 --> G1 --> G2 --> G3 --> G4 --> G5 --> G6 --> G7 --> G8 --> CRE
+    end
+
+    subgraph Layer3["Layer 3: Settlement, Evidentiary Proof & Practice Ledger"]
+        KF["Chainlink KeystoneForwarder<br/>(0xF8344CFd5c43616a4366C34E3EEE75af79a74482)"]
+        CC["UCC12ControlConsumer.sol<br/>(ERC-165 IReceiver / 62 & 64-byte Slices)"]
+        MA["MockControllableAsset.sol<br/>(NY UCC §§ 12-106 Lock & 9-208 Release)"]
+        LEDGER["Rolling SHA-256 Hash-Chained Ledger<br/>(Zero-Key Bit-for-Bit Deterministic Replay)"]
+        PDF["FRE 902(13) & 902(14) Court Pleading PDF<br/>(28-Line Paper + Trailing JSON Proof Packet)"]
+
+        CRE --> KF --> CC --> MA
+        CRE --> LEDGER --> PDF
+    end
+```
+
+---
+
+## Statutory State Machine
+
+```mermaid
+stateDiagram-v2
+    [*] --> IngestFacility: Finalized Sepolia EVM State + Registries
+
+    state IngestFacility {
+        [*] --> CheckExclusivity: NY UCC § 12-105(a)-(c)
+        CheckExclusivity --> ExclusivityPass: No Transferor Co-Sign & No Unilateral Action
+        CheckExclusivity --> ExclusivityFail: Transferor Co-Sign Taint (§ 12-105(c)(2)(B))
+    }
+
+    ExclusivityFail --> Action3_DefensiveHedge: Forfeit § 9-326A Super-Priority\nExecute $10k Defensive Hedge
+
+    ExclusivityPass --> CheckDisbursedValue: NY UCC § 12-102(a)(3) & § 3-303(a)
+    CheckDisbursedValue --> ValueZero: Disbursed Value == $0 (Unperformed Promise)
+    CheckDisbursedValue --> ValuePositive: Disbursed Value > $0 (Actual Value Given)
+
+    ValueZero --> ForfeitPriority: Deny Qualifying Purchaser Status
+    ForfeitPriority --> Action3_DefensiveHedge
+
+    ValuePositive --> CheckInsolvency: SEC EDGAR Form 8-K Notice Audit
+
+    state CheckInsolvency {
+        [*] --> CheckChapter11: Form 8-K Item 1.03 Bankruptcy Detected
+        CheckChapter11 --> SafeHarborCheck: Evaluate Safe-Harbor Exemption
+        SafeHarborCheck --> NonExemptLoan: Non-Exempt Commercial Loan (Code 0)
+        SafeHarborCheck --> RepoSafeHarbor: 11 U.S.C. § 559 Repo / UK Sch 4ZZA (Code 1)
+    }
+
+    NonExemptLoan --> Action2_AutomaticStayHold: Respect 11 U.S.C. § 362(a) Stay\nBlock On-Chain Seizure\nExecute Off-Estate Macro Hedge
+
+    RepoSafeHarbor --> CheckPayoff: Check Outstanding Debt & Debtor Demand
+    CheckPayoff --> OutstandingDebtZero: Debt == $0 & Signed Demand Received
+    CheckPayoff --> DebtActive: Active Repo Facility
+
+    DebtActive --> Action1_SafeHarborCloseout: Lock Account-Debtor Discharge (§ 12-106(b)-(f))\nAnchor Super-Priority (§ 9-326A)\nExecute $10k Virtual Closeout Hedge
+
+    OutstandingDebtZero --> Action4_ReleaseDuty: Mandatory 10-Day Control Release\nNY UCC § 9-208(b)(8)\nControl Reverts to Debtor (0xDeB7...)\nTrade Allocation = $0
+
+    Action1_SafeHarborCloseout --> AnchorSepolia
+    Action2_AutomaticStayHold --> AnchorSepolia
+    Action3_DefensiveHedge --> AnchorSepolia
+    Action4_ReleaseDuty --> AnchorSepolia
+
+    AnchorSepolia --> [*]: 11-Field Receipt Anchored via KeystoneForwarder
+```
+
+---
+
+## Technical Track Specialization & Evaluator Alignment
 
 | Track / Capability | Core Technological Contribution | Statutory & Technical Authorities |
 |---|---|---|
@@ -22,66 +139,7 @@ LexControl was engineered to address critical institutional failure modes at the
 
 ---
 
-## System Architecture
-
-```
-                                  PRIMARY DATA SOURCES
-   ┌───────────────────────┬──────────────────────────┬────────────────────────┐
-   │  Legal Registries     │   Market Venues & MCP    │  Ethereum Sepolia      │
-   │  • GLEIF Golden Copy  │   • RYO-CHAN Read-Only   │  • Finalized State     │
-   │  • SEC EDGAR Form 8-K │   • Coinbase Public Spot │    (Block Finality)    │
-   │  • UK Gazette Notices │   • Binance Hourly Klines│  • MockControllable    │
-   └───────────┬───────────┴────────────┬─────────────┴───────────┬────────────┘
-               │                        │                         │
-               ▼                        ▼                         ▼
-   ┌───────────────────────────────────────────────────────────────────────────┐
-   │                  CHAINLINK RUNTIME ENVIRONMENT (CRE) DON                  │
-   │  • Bun / QuickJS Javy Deterministic WebAssembly Engine (workflow.wasm)    │
-   │  • BFT Consensus: consensusMedianAggregation across independent DON nodes │
-   │  • LAST_FINALIZED_BLOCK_NUMBER EVM contract calls (Zero reorg exposure)   │
-   │  • Cryptographic Report Encoding & Secp256k1 Threshold Signing            │
-   └─────────────────────────────────────┬─────────────────────────────────────┘
-                                         │
-                                         ▼
-   ┌───────────────────────────────────────────────────────────────────────────┐
-   │                  LEXCONTROL 8-GATE DETERMINISTIC PIPELINE                 │
-   │  [G1] Freshness TTL & Null-Safety   [G5] UCC 12-105 Control & 9-102 CPI   │
-   │  [G2] Cross-Venue Basis (<=200bps)  [G6] UCC 12-107 Choice of Law         │
-   │  [G3] Prompt-Injection Guard        [G7] 11 USC 362(a) Stay vs Safe-Harbor│
-   │  [G4] GLEIF LEI Status (ISSUED)     [G8] ATR Sizing & Risk/Reward Ratio   │
-   └─────────────────────────────────────┬─────────────────────────────────────┘
-                                         │
-                    ┌────────────────────┴────────────────────┐
-                    ▼                                         ▼
-   ┌─────────────────────────────────┐       ┌─────────────────────────────────┐
-   │     ON-CHAIN SMART CONTRACTS    │       │   EVIDENTIARY & TRADING DESK    │
-   │ • KeystoneForwarder Validation  │       │ • SHA-256 Rolling Hash Chain    │
-   │ • UCC12ControlConsumer.sol      │       │ • FRE 902(13)/(14) Pleading PDF │
-   │ • UCC 12-106 Discharge Lock     │       │ • Trailing Embedded JSON Proof  │
-   │ • UCC 9-208(b)(8) Auto-Release  │       │ • $100k Virtual Practice Desk   │
-   └─────────────────────────────────┘       └─────────────────────────────────┘
-```
-
----
-
-## The Core Problem & Statutory Mandate
-
-### The \$2.4 Trillion Digital Collateral Dilemma
-Digital assets and tokenized debt instruments represent hundreds of billions in capital markets. However, institutional lenders and trading desks face two existential legal vulnerabilities:
-
-1. **Perfection-by-Control Failure under NY UCC Article 12 (Effective June 3, 2026)**:
-   Under revised New York Uniform Commercial Code § 9-326A, a secured creditor holding **exclusive control** over a Controllable Electronic Record (CER) or Controllable Payment Intangible (CPI) achieves **super-priority** over creditors who perfected solely via a filed UCC-1 financing statement. However, if the smart contract multi-signature structure requires the debtor's co-signature to move tokens, **NY UCC § 12-105(c)(2)(B)** taints exclusivity, destroying super-priority. Most existing DeFi lending protocols suffer from this fatal flaw.
-
-2. **The Bankruptcy Automatic Stay Violation Trap**:
-   When a borrower files for Chapter 11 bankruptcy (detected via SEC EDGAR Form 8-K Item 1.03), **11 U.S.C. § 362(a)** triggers an immediate Automatic Stay. Any automated smart contract liquidation, token freeze, or margin grab against a non-exempt commercial loan is void *ab initio* and subjects the creditor to severe sanctions for contempt of court under § 362(k). Only contracts qualifying under **11 U.S.C. §§ 546(e), 555, 559, or 560** (e.g. Master Repurchase Agreements or Qualified Financial Contracts) are safe-harbored. Traditional automated execution engines lack the legal reasoning to distinguish non-exempt commercial facilities from safe-harbored contracts.
-
-LexControl resolves this dilemma autonomously with zero generative hearsay.
-
----
-
 ## Four Deterministic Statutory Presets
-
-The system includes 4 pre-cached real-world test facilities seeded in both Solidity smart contracts and offline fixtures:
 
 | Preset | Legal & Commercial Fact Pattern | Statutory Analysis | Engine Ruling | Ledger Action |
 |:---:|---|---|---|:---:|
@@ -94,7 +152,7 @@ The system includes 4 pre-cached real-world test facilities seeded in both Solid
 
 ## Evidentiary Self-Authentication (FRE 902(13) & FRE 902(14))
 
-LexControl is engineered to meet the highest evidentiary standards in United States federal and New York state courts:
+LexControl meets the highest evidentiary standards in United States federal and New York state courts:
 
 1. **FRE Rule 902(13) — Certified Records Generated by Electronic Process or System**:
    Accompanied by a written certification under 28 U.S.C. § 1746 establishing that the record was generated by a deterministic system that produces accurate results: Chainlink CRE WebAssembly execution, Byzantine Fault Tolerant node consensus, and EVM finalized block state reads.
@@ -107,35 +165,22 @@ LexControl is engineered to meet the highest evidentiary standards in United Sta
 
 ---
 
-## Zero-Hearsay Programmatic JSON Number Readback
-
-In legal proceedings, LLM hallucinations represent inadmissible hearsay under FRE Rule 802. LexControl completely eliminates generative hearsay through a strict programmatic readback layer:
-
-```
-[EvidencePack (Frozen JSON)] ───► [Council Thesis] ───► [Programmatic Path Lookup]
-                                                                │
-   ┌────────────────────────────────────────────────────────────┴───────────────────────────┐
-   ▼                                                                                        ▼
-[Path: "evidence.cre_onchain_facility.disbursed_value_usd_12_102_a_3"]   [Readback Match: $5,000,000]
-   • If value is null, undefined, or missing ──► Flagged as unverified (confidence drops to 0.55)
-   • If path matches frozen evidence ──────────► Certified Verified (confidence: 0.96)
-```
-
-100% of numerical figures cited in council opinions and judge rulings are read back directly from the frozen JSON evidence pack.
-
----
-
 ## Directory Structure
 
 ```
 lexcontrol/
-├── .env.example                               # Production environment variable template (zero dummy private keys)
-├── .gitignore                                 # Git ignore rules (node_modules, .next, *.pem)
-├── package.json                               # NPM scripts & dependencies
-├── tsconfig.json                              # Strict ES2022 TypeScript configuration (excludes cre/)
-├── next.config.mjs                            # Next.js 15 configuration with outputFileTracingRoot
-├── project.yaml                               # Chainlink CRE project settings & Sepolia RPC mappings
-├── secrets.yaml                               # Chainlink CRE logical secrets schema
+├── .github/
+│   └── workflows/
+│       └── deploy-pages.yml                   # Automated GitHub Pages CI/CD workflow
+├── .env.example                               # Production environment template (no real keys)
+├── .gitignore                                 # Production hygiene rules
+├── LICENSE                                    # MIT License
+├── PROJECT_SUBMISSION_FORM.md                 # Official BLI & RYO-CHAN submission form
+├── package.json                               # Dependencies & scripts (test, verify, build, deploy)
+├── tsconfig.json                              # TypeScript configuration (excludes cre/)
+├── next.config.mjs                            # Next.js static export config (output: "export")
+├── project.yaml                               # Chainlink CRE project manifest
+├── secrets.yaml                               # Chainlink CRE secrets mapping
 ├── SUBMISSION.md                              # Institutional Hackathon Submission Whitepaper
 ├── README.md                                  # System Architecture & Documentation
 ├── contracts/
@@ -145,7 +190,7 @@ lexcontrol/
 │   └── test/
 │       └── LexControl.t.sol                   # Foundry Solidity unit & fuzz tests
 ├── cre/
-│   ├── SIMULATION_OUTPUT.txt                  # Full CRE build & simulation log (workflow.wasm + broadcast)
+│   ├── SIMULATION_OUTPUT.txt                  # Full CRE build & simulation log
 │   └── lexcontrol-workflow/
 │       ├── package.json                       # CRE workflow package manifest
 │       ├── tsconfig.json                      # Bundler ESNext compiler config for Javy/QuickJS
@@ -155,28 +200,24 @@ lexcontrol/
 │       └── main.ts                            # Deterministic CRE workflow with LAST_FINALIZED_BLOCK_NUMBER
 ├── src/
 │   ├── types/
-│   │   └── lexcontrol.ts                      # Strict TypeScript interfaces for EvidencePack, Gates, Council, Trade
+│   │   └── lexcontrol.ts                      # Strict TypeScript interfaces
 │   ├── fixtures/
-│   │   └── recordedPresets.ts                 # 4 pre-cached deterministic presets (zero network calls needed)
+│   │   └── recordedPresets.ts                 # 4 pre-cached deterministic presets
 │   ├── agent/
 │   │   ├── ryoClient.ts                       # Real Ethereum Sepolia RPC + live GLEIF/Coinbase/Binance & RYO-CHAN MCP
 │   │   └── council.ts                         # 3-Agent Council with programmatic JSON number readback
 │   ├── engine/
-│   │   └── deterministicGates.ts              # 8 sequential deterministic risk gates (fail-closed pipeline)
+│   │   └── deterministicGates.ts              # 8 sequential deterministic risk gates
 │   ├── ledger/
+│   │   ├── sha256Pure.ts                      # Pure FIPS 180-4 SHA-256 (browser + Node + WASM)
 │   │   └── hashChain.ts                       # Canonical recursive sorted-key SHA-256 rolling hash chain
 │   ├── legal/
-│   │   └── pleadingPdfExporter.ts             # 28-line FRE 902(13)/(14) court pleading PDF exporter
+│   │   └── pleadingPdfExporter.ts             # 28-line FRE 902 court pleading PDF exporter
 │   └── app/
-│       ├── layout.tsx                         # Dark institutional terminal theme
-│       ├── page.tsx                           # 3-Panel institutional terminal UI
-│       └── api/
-│           ├── evaluate/
-│           │   └── route.ts                   # REST endpoint returning active receipt & full ledger
-│           └── verify/
-│               └── route.ts                   # REST endpoint for full hash-chain & PDF proof verification
+│       ├── layout.tsx                         # Dark institutional theme layout
+│       └── page.tsx                           # Client-side 3-panel console with What-If simulator
 ├── tests/
-│   └── lexcontrol.test.ts                     # 38 automated unit, boundary, and cryptographic tests
+│   └── lexcontrol.test.ts                     # 42 automated unit, boundary, and cryptographic tests
 └── scripts/
     ├── verify.ts                              # Zero-key offline verifier CLI
     └── deploySepolia.ts                       # Sepolia deployer with native Yul IR compilation
@@ -191,11 +232,11 @@ lexcontrol/
 npm install
 ```
 
-### 2. Run the 38-Test Automated Suite
+### 2. Run the 42-Test Automated Suite
 ```bash
 npm test
 ```
-*Executes all 38 unit, statutory boundary, cryptographic, and source-code invariant tests in < 5 seconds.*
+*Executes all 42 unit, statutory boundary, cryptographic (including pure FIPS 180-4 SHA-256 vectors), and source-code invariant tests in < 5 seconds.*
 
 ### 3. Run the Zero-Key Offline Verifier CLI
 ```bash
@@ -203,17 +244,17 @@ npm run verify
 ```
 *Performs bit-for-bit replay of all 4 presets, verifies the SHA-256 rolling hash chain, tests 100% of JSON citation readbacks, and validates the embedded PDF proof packet with zero API keys and zero network calls.*
 
-### 4. Build Production Next.js Bundle
+### 4. Build Production Static Export (GitHub Pages)
 ```bash
 npm run build
 ```
-*Validates TypeScript compilation across all routes with zero errors.*
+*Compiles static export into `./out` with zero errors.*
 
-### 5. Launch the Institutional Web Terminal
+### 5. Launch the Institutional Web Terminal Locally
 ```bash
 npm run dev
 ```
-Open [http://localhost:3000](http://localhost:3000) to access the 3-panel institutional terminal.
+Open [http://localhost:3000](http://localhost:3000) to access the interactive console and on-screen court pleading preview.
 
 ---
 
@@ -244,14 +285,16 @@ npm run deploy:sepolia
 | **11 U.S.C. §§ 555/559/560 Safe Harbor** | Unaware | Manual legal memo | **Statutory Safe-Harbor Closeout & Lock** |
 | **NY UCC § 9-208(b)(8) 10-Day Release** | None | None | **Automatic On-Chain Control Transfer** |
 | **Admissibility in Court** | Inadmissible logs | Inadmissible hearsay | **FRE 902(13)/(14) Pleading PDF with Proof** |
+| **On-Screen Legal Exhibit Preview** | None | None | **Interactive 28-Line Numbered Legal Pleading** |
+| **Interactive "What-If" Stress-Tester** | None | None | **Live Mutation of Co-Sign, Value & Safe-Harbor** |
 | **Hallucination Prevention** | N/A | High hallucination risk | **100% Programmatic JSON Readback** |
 | **Oracle Consensus** | Single RPC or CEX API | Web scraping | **Chainlink CRE BFT Median Aggregation** |
 | **Prompt Injection Protection** | None | Fragile system prompts | **Unicode Control Stripping & Sanitization** |
 | **Zero-Network Offline Verification** | Impossible | Impossible | **Bit-for-Bit Deterministic Hash Chain Replay** |
-| **Automated Test Coverage** | 5–15 basic tests | None | **38 Automated Statutory & Unit Tests** |
+| **Automated Test Coverage** | 5–15 basic tests | None | **42 Automated Statutory & Unit Tests** |
 
 ---
 
 ## License
 
-MIT License. Designed and developed for the BLI Legal Tech Hackathon 2.
+MIT License (`LICENSE`). Designed and developed for the BLI Legal Tech Hackathon 2.

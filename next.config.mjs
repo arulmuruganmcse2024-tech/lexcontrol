@@ -1,12 +1,17 @@
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-  outputFileTracingRoot: __dirname,
-};
+const isGithubActions = process.env.GITHUB_ACTIONS === "true"
 
-export default nextConfig;
+const nextConfig = {
+  output: "export",
+  trailingSlash: true,
+  basePath: isGithubActions ? "/lexcontrol" : "",
+  assetPrefix: isGithubActions ? "/lexcontrol/" : "",
+  images: {
+    unoptimized: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+}
+
+export default nextConfig

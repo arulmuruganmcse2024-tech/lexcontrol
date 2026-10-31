@@ -1,8 +1,10 @@
-import { createHash } from "crypto"
 import { runAutonomousCouncil } from "../agent/council"
 import { loadEvidencePack } from "../agent/ryoClient"
 import { evaluateEightDeterministicGates } from "../engine/deterministicGates"
 import { DecisionReceipt, EvidencePack } from "../types/lexcontrol"
+import { sha256Hex } from "./sha256Pure"
+
+export { sha256Hex }
 
 export function canonicalizeJson(value: unknown): string {
   if (value === null || typeof value !== "object") {
@@ -19,9 +21,7 @@ export function canonicalizeJson(value: unknown): string {
   return `{${entries.join(",")}}`
 }
 
-export function sha256Hex(input: string): string {
-  return "0x" + createHash("sha256").update(input, "utf8").digest("hex")
-}
+
 
 const SEPOLIA_TX_HASHES: Record<number, string> = {
   1: "0xe493538a9c8f4120b77d28a145c90821b6f07e12d4a56893c0123b89a45173fc",
