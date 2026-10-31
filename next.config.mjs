@@ -1,11 +1,11 @@
 /** @type {import('next').NextConfig} */
-const isGithubActions = process.env.GITHUB_ACTIONS === "true"
+const isLocalDev = process.env.NODE_ENV === "development"
 
 const nextConfig = {
   output: "export",
   trailingSlash: true,
-  basePath: isGithubActions ? "/lexcontrol" : "",
-  assetPrefix: isGithubActions ? "/lexcontrol/" : "",
+  basePath: isLocalDev ? "" : "/lexcontrol",
+  assetPrefix: isLocalDev ? "" : "/lexcontrol/",
   images: {
     unoptimized: true,
   },
