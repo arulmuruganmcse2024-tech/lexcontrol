@@ -1,0 +1,19 @@
+{
+  "name": "lexcontrol-cre-workflow",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:wasm": "cre workflow build .",
+    "simulate": "cre workflow simulate . --target staging-settings --config config.staging.json main.ts"
+  },
+  "dependencies": {
+    "@chainlink/cre-sdk": "^1.23.0",
+    "viem": "^2.34.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0"
+  }
+}
+

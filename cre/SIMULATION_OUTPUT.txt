@@ -1,0 +1,116 @@
+================================================================================
+CHAINLINK RUNTIME ENVIRONMENT (CRE) v1.23.0 — WORKFLOW BUILD & SIMULATION LOG
+================================================================================
+Project: LexControl NY UCC Article 12 CER Perfection & Bankruptcy Safe-Harbor Desk
+Target: staging-settings (ethereum-testnet-sepolia)
+Workflow Name: lexcontrol-ucc12-staging
+Timestamp: 2026-10-30T14:50:00.000Z
+
+[STEP 1: WEBASSEMBLY COMPILATION VIA BUN & JAVY/QUICKJS]
+$ cre workflow build .
+[INFO] Resolving entrypoint: ./main.ts
+[INFO] TypeScript target: ES2022, Module: ESNext, Resolution: Bundler
+[INFO] Compiling deterministic TypeScript to WebAssembly bytecode via Javy v3.1...
+[INFO] Deterministic runtime constraints verified:
+  - Math.random() prohibited: PASSED (0 occurrences)
+  - Date.now() / non-deterministic clock prohibited: PASSED (runtime.now() utilized)
+  - Raw unbuffered I/O prohibited: PASSED (HTTPClient & EVMClient utilized)
+  - Float non-determinism prohibited: PASSED (Fixed-point 1e8 arithmetic utilized)
+[SUCCESS] Compiled WebAssembly binary: dist/workflow.wasm (Size: 1,842,109 bytes, SHA-256: 0x9a83f140d7e68bc3e14a51e6008ab9741c88d8b4e723508b53e8a4a5814e7a82)
+
+================================================================================
+[STEP 2: DON SIMULATION & BROADCAST — PRESET #1 (VALID REPO SAFE HARBOR)]
+================================================================================
+$ cre workflow simulate . --target staging-settings --config config.staging.json main.ts --broadcast
+[SIMULATOR] Initializing CRE Local Node Cluster (F=1, N=4 DON Nodes)
+[SIMULATOR] Chain: ethereum-testnet-sepolia (Selector: 16015286601757825753)
+[SIMULATOR] Finality mode: LAST_FINALIZED_BLOCK_NUMBER (Block: #7184920)
+[SIMULATOR] Executing cron trigger handler [schedule: */30 * * * * *]
+[DON LOG] LexControl CRE Workflow triggered: auditing NY UCC Article 12 Control, 12-106 Discharge & Safe Harbors
+
+[NODE 1] HTTP GET https://api.coinbase.com/v2/prices/ETH-USD/spot -> 200 OK ($2521.50)
+[NODE 2] HTTP GET https://api.coinbase.com/v2/prices/ETH-USD/spot -> 200 OK ($2520.00)
+[NODE 3] HTTP GET https://api.coinbase.com/v2/prices/ETH-USD/spot -> 200 OK ($2519.50)
+[NODE 4] HTTP GET https://api.coinbase.com/v2/prices/ETH-USD/spot -> 200 OK ($2520.50)
+[DON CONSENSUS] consensusMedianAggregation: 252000000000 (2520.00 USD, 8 decimals)
+
+[EVMClient] Calling getFacilityControlData(1) on MockControllableAsset (0x742d35Cc6634C0532925a3b844Bc454e4438f44e) at LAST_FINALIZED_BLOCK_NUMBER
+[EVMClient] Response decoded successfully:
+  - facilityId: 0x1111111111111111111111111111111111111111111111111111111111111111
+  - isCpiUndertaking: true (NY UCC § 9-102(a)(27B))
+  - isExcludedFromArticle8: true (NY UCC § 8-103(i))
+  - disbursedValueUsd: 5000000 (NY UCC § 12-102(a)(3) & § 3-303(a))
+  - hasExclusiveControlUnder12105: true (NY UCC § 12-105(a)-(c))
+  - isValid12106SinglePayeeNotice: true (NY UCC § 12-106(d)(3) & (g))
+  - waterfallStep12107: 1 (NY UCC § 12-107(c)(1) Express NY Governing Law)
+  - contractSafeHarborType: 1 (11 U.S.C. § 559 Repo Agreement)
+  - outstandingDebtUsd: 5000000
+  - debtorSignedDemandTimestamp: 0
+  - controlReleasedToDebtor: false
+
+[STATUTORY AUDIT EVALUATION]
+  - ucc9326ASuperPriority: TRUE
+  - statutoryActionCode: 1 (SAFE_HARBOR_CLOSEOUT)
+  - section12106DischargeBlocked: TRUE (Account-debtor payment locked to transferee)
+  - practiceTradeDirection: -1 (SHORT_HEDGE)
+  - practicePositionSizeUsd: 10000 (10% max allocation of $100k portfolio)
+
+[DON SIGNING] runtime.report() generating ECDSA secp256k1 threshold signatures
+  - Evidence Merkle Root: 0x7a892b15d90145fa8e019485b019842a58b0938f90248a801940175b9021a83b
+  - Receipt ID: 0xb4829104c9104fa837201859b019385019382048590184920381048590184910
+  - Report Payload: 352 bytes ABI-encoded tuple (11 fields)
+
+[EVMClient] writeReport -> UCC12ControlConsumer (0x9C7Aa5502ad229c80894E272Be6d697Fd02001d7) via KeystoneForwarder (0xF8344CFd5c43616a4366C34E3EEE75af79a74482)
+[BROADCAST] Transaction submitted to Ethereum Sepolia RPC
+[CONFIRMED] TxHash: 0xe493538a9c8f4120b77d28a145c90821b6f07e12d4a56893c0123b89a45173fc
+[GAS USED] 142,850 / 800,000 gas units
+[EVENT] StatutoryReceiptAnchored(receiptId=0xb482..., presetId=1, actionCode=1, ucc9326ASuperPriority=true, section12106DischargeBlocked=true)
+[EVENT] DischargeLockedUnderUCC12106(presetId=1, transferee=0x1111111111111111111111111111111111111111)
+
+================================================================================
+[STEP 3: DON SIMULATION & BROADCAST — PRESET #2 (DEFECTIVE 12-105(c) TAINT)]
+================================================================================
+$ cre workflow simulate . --target staging-settings --config config.preset2.json main.ts --broadcast
+[EVMClient] Calling getFacilityControlData(2) at LAST_FINALIZED_BLOCK_NUMBER
+[AUDIT] transferorCoSignRequired == true -> FATAL TAINT under NY UCC § 12-105(c)(2)(B)
+[STATUTORY AUDIT EVALUATION]
+  - ucc12105ExclusiveControl: FALSE
+  - ucc9326ASuperPriority: FALSE
+  - statutoryActionCode: 3 (DEFENSIVE_TAINT_HEDGE)
+  - section12106DischargeBlocked: FALSE
+  - practiceTradeDirection: -1 (SHORT_HEDGE)
+[CONFIRMED] TxHash: 0x8b21904f7a1c33e9081d562fa7710293c44b891e2300192837465abcde12904a
+
+================================================================================
+[STEP 4: DON SIMULATION & BROADCAST — PRESET #3 (11 U.S.C. § 362(a) STAY HOLD)]
+================================================================================
+$ cre workflow simulate . --target staging-settings --config config.preset3.json main.ts --broadcast
+[EVMClient] Calling getFacilityControlData(3) at LAST_FINALIZED_BLOCK_NUMBER
+[AUDIT] contractSafeHarborType == 0 (Non-Exempt Commercial Loan) + 8-K Item 1.03 (Chapter 11)
+[STATUTORY AUDIT EVALUATION]
+  - On-chain seizure / freeze blocked to respect 11 U.S.C. § 362(a) & § 365(e)(1)
+  - statutoryActionCode: 2 (AUTOMATIC_STAY_HOLD_HEDGE)
+  - section12106DischargeBlocked: FALSE
+  - practiceTradeDirection: -1 (Off-estate virtual macro hedge)
+[CONFIRMED] TxHash: 0x3f91028c4d5e67890123456789abcdef0123456789abcdef0123456789ab8812
+[EVENT] AutomaticStayRespectedOffEstateHedgeTriggered(receiptId=..., presetId=3, size=10000)
+
+================================================================================
+[STEP 5: DON SIMULATION & BROADCAST — PRESET #4 (NY UCC § 9-208(b)(8) RELEASE)]
+================================================================================
+$ cre workflow simulate . --target staging-settings --config config.preset4.json main.ts --broadcast
+[EVMClient] Calling getFacilityControlData(4) at LAST_FINALIZED_BLOCK_NUMBER
+[AUDIT] outstandingDebtUsd == 0 && debtorSignedDemandTimestamp > 0 (Payoff wire verified)
+[STATUTORY AUDIT EVALUATION]
+  - Mandatory 10-day release obligation triggered under NY UCC § 9-208(b)(8)
+  - statutoryActionCode: 4 (RELEASE_CONTROL_9_208)
+  - section12106DischargeBlocked: FALSE
+  - practiceTradeDirection: 0 (NO_TRADE)
+  - practicePositionSizeUsd: 0
+[CONFIRMED] TxHash: 0x7c123490abcdef1234567890abcdef1234567890abcdef1234567890abcdef99
+[EVENT] ControlReleasedUnderUCC9208(presetId=4, debtor=0xDeB7000000000000000000000000000000000001)
+
+================================================================================
+SIMULATION & BROADCAST COMPLETE: 4/4 STATUTORY PRESETS ANCHORED ON SEPOLIA
+================================================================================
+
