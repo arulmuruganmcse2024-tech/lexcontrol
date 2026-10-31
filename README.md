@@ -14,11 +14,20 @@
 
 ---
 
+<a href="https://youtu.be/xU2wFp58JPc" target="_blank">
+  <img src="https://img.youtube.com/vi/xU2wFp58JPc/sddefault.jpg" alt="LexControl System Demonstration &amp; Architecture Walkthrough" width="100%" style="max-width: 100%; border-radius: 8px;" />
+</a>
+
+**Watch the demonstration**: https://youtu.be/xU2wFp58JPc &bull; Institutional walkthrough of New York UCC Article 12 CER perfection-by-control, 11 U.S.C. § 559 safe-harbor execution, Chainlink CRE WebAssembly BFT consensus, and FRE 902 court pleading generation.
+
+---
+
 ## Evaluator Quick-Links & Live Resources
 
 | Resource | Direct Link | Description |
 |---|---|---|
 | **Live Institutional Terminal (GitHub Pages)** | [https://arulmuruganmcse2024-tech.github.io/lexcontrol/](https://arulmuruganmcse2024-tech.github.io/lexcontrol/) | Fully client-side interactive console with What-If simulator |
+| **System Video Demonstration** | [https://youtu.be/xU2wFp58JPc](https://youtu.be/xU2wFp58JPc) | Full end-to-end system video demonstration |
 | **Interactive FRE 902 Court Exhibit View** | [https://arulmuruganmcse2024-tech.github.io/lexcontrol/#court-exhibit](https://arulmuruganmcse2024-tech.github.io/lexcontrol/#court-exhibit) | 28-line numbered court pleading paper preview & PDF download |
 | **Chainlink CRE WASM Workflow** | [`cre/lexcontrol-workflow/main.ts`](file:///c:/Users/arulm/OneDrive/Documents/Hackathon/lexcontrol/cre/lexcontrol-workflow/main.ts) | Deterministic TypeScript workflow for Bun & Javy/QuickJS |
 | **CRE Simulation & Broadcast Log** | [`cre/SIMULATION_OUTPUT.txt`](file:///c:/Users/arulm/OneDrive/Documents/Hackathon/lexcontrol/cre/SIMULATION_OUTPUT.txt) | Verified WASM compilation and Sepolia transaction hashes |

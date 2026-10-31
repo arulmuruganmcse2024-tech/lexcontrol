@@ -2,6 +2,7 @@
 
 **BLI Legal Tech Hackathon 2 — DoraHacks**  
 - **Live Institutional Terminal:** [https://arulmuruganmcse2024-tech.github.io/lexcontrol/](https://arulmuruganmcse2024-tech.github.io/lexcontrol/)  
+- **System Video Demonstration:** [https://youtu.be/xU2wFp58JPc](https://youtu.be/xU2wFp58JPc)  
 - **Interactive FRE 902 Exhibit:** [https://arulmuruganmcse2024-tech.github.io/lexcontrol/#court-exhibit](https://arulmuruganmcse2024-tech.github.io/lexcontrol/#court-exhibit)  
 - **Repository URL:** [https://github.com/arulmuruganmcse2024-tech/lexcontrol](https://github.com/arulmuruganmcse2024-tech/lexcontrol)
 

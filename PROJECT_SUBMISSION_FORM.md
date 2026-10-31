@@ -5,6 +5,7 @@
 - **One-Line Description:** Autonomous New York UCC Article 12 (§§ 12-102–12-107) Controllable Electronic Record (CER) Perfection-by-Control, Account-Debtor Discharge Lock, Bankruptcy Safe-Harbor, and Market-Evidence Practice Trading Desk powered by Chainlink Runtime Environment (CRE) and RYO-CHAN MCP.
 - **Repository URL:** https://github.com/arulmuruganmcse2024-tech/lexcontrol
 - **Live Institutional Terminal (GitHub Pages):** https://arulmuruganmcse2024-tech.github.io/lexcontrol/
+- **Video Demonstration Walkthrough:** https://youtu.be/xU2wFp58JPc
 - **Live On-Screen FRE 902 Court Exhibit:** https://arulmuruganmcse2024-tech.github.io/lexcontrol/#court-exhibit
 - **License:** MIT License (`LICENSE`)
 
